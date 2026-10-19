@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TES SUBTANSI KHUSUS IPDN</title>
+<style>
+:root{--r:#b3121f;--r2:#8f0e19;--rl:#fdecee;--bg:#f6f6f7;--c:#fff;--t:#1c1c1f;--m:#6b6b73;--b:#e3e3e7;--ok:#1b8a4b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--r:#e0434f;--r2:#c9303c;--rl:#3a1a1d;--bg:#141415;--c:#1f1f22;--t:#f0f0f2;--m:#a0a0a8;--b:#34343a;--ok:#4cc58a}}
+:root[data-theme="dark"]{--r:#e0434f;--r2:#c9303c;--rl:#3a1a1d;--bg:#141415;--c:#1f1f22;--t:#f0f0f2;--m:#a0a0a8;--b:#34343a;--ok:#4cc58a}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--t);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:var(--r);color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+header b{font-size:16px}header small{opacity:.85;display:block;font-size:12px}
+.timer{background:#fff;color:var(--r2);font-weight:700;padding:6px 14px;border-radius:20px;font-variant-numeric:tabular-nums}
+.timer.low{animation:p 1s infinite}@keyframes p{50%{opacity:.5}}
+main{max-width:1020px;margin:0 auto;padding:18px}
+.card{background:var(--c);border:1px solid var(--b);border-radius:10px;padding:20px;margin-bottom:16px}
+h1,h2{margin:0 0 10px}h1{color:var(--r)}
+.grid{display:grid;grid-template-columns:1fr 300px;gap:16px}@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.opt{display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;background:var(--c);color:var(--t);border:1px solid var(--b);border-radius:8px;padding:14px;margin-bottom:10px;cursor:pointer;font:inherit}
+.opt:hover{border-color:var(--r)}.opt.sel{border-color:var(--r);background:var(--rl)}
+.opt i{font-style:normal;min-width:30px;height:30px;border:1px solid var(--b);border-radius:6px;display:grid;place-items:center;font-weight:600;background:var(--bg)}
+.opt.sel i{background:var(--r);color:#fff;border-color:var(--r)}
+.btn{background:var(--r);color:#fff;border:0;border-radius:8px;padding:10px 20px;font:inherit;font-weight:600;cursor:pointer}.btn:hover{background:var(--r2)}.btn.o{background:transparent;color:var(--r);border:1px solid var(--r)}
+.nav{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;max-height:320px;overflow:auto}
+.nav button{border:1px solid var(--b);background:var(--c);color:var(--t);border-radius:6px;padding:5px 0;cursor:pointer;font:12px inherit}
+.nav .a{background:var(--r);color:#fff;border-color:var(--r)}.nav .cur{outline:2px solid var(--t)}.nav .f{background:#f5a623;color:#000;border-color:#f5a623}
+.tag{display:inline-block;background:var(--rl);color:var(--r);font-size:12px;font-weight:600;padding:2px 10px;border-radius:12px;margin-bottom:8px}
+input[type=text]{width:100%;padding:10px;border:1px solid var(--b);border-radius:8px;font:inherit;background:var(--c);color:var(--t)}
+.bar{height:10px;background:var(--b);border-radius:6px;overflow:hidden}.bar div{height:100%;background:var(--r)}
+.row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.big{font-size:44px;font-weight:800;color:var(--r);line-height:1}
+.ex{background:var(--bg);border-left:4px solid var(--r);padding:12px 14px;border-radius:6px;margin-top:10px;font-size:14px}
+.ref{color:var(--m);font-size:13px}.good{color:var(--ok);font-weight:600}ul{padding-left:20px;margin:6px 0}.hide{display:none}
+</style></head><body>
+<header><div><b>TES SUBTANSI KHUSUS IPDN</b><small>Computer Assisted Test</small></div><div id="tm" class="timer hide"></div></header>
+<main id="app"></main>
+<script>
+const TOTAL=200,DURATION=90*60;
+// dimensi: [nama, definisi, makna tinggi, makna rendah, bobot prioritas]
+const DM=[["Kepatuhan Komando","kecenderungan mengikuti dan melapor melalui rantai komando","Disiplin hierarkis, mengutamakan koordinasi dan pelaporan berjenjang.","Kurang bertumpu pada hierarki; perlu memperkuat koordinasi dan pelaporan.",3],
+["Kepatuhan SOP","kecenderungan berpegang pada prosedur dan aturan tertulis","Tertib, akuntabel, dan konsisten pada aturan.","Cenderung longgar pada prosedur; perlu membiasakan merujuk aturan.",4],
+["Etika & Integritas","kecenderungan mendahulukan kejujuran dan prinsip etika","Teguh, jujur, dan berani menolak penyimpangan.","Prinsip etika kurang menonjol dalam dilema; perlu penguatan keberanian moral.",5],
+["Inisiatif & Diskresi","kecenderungan mengambil keputusan sendiri dengan cepat","Gesit dan solutif, namun berisiko melangkahi wewenang bila berlebihan.","Cenderung menunggu arahan; perlu melatih keputusan terukur dalam batas wewenang.",1],
+["Orientasi Pelayanan","kecenderungan mengutamakan kepentingan masyarakat","Empatik dan berorientasi pada warga, namun perlu dijaga tetap sesuai aturan.","Kurang menimbang dampak bagi masyarakat; perlu menguatkan empati pelayanan.",2]];
+// [situasi, komando, SOP, etika, inisiatif, pelayanan, prinsip & rujukan]
+const CX=[
+["Atasan memerintahkan Anda mencairkan dana kegiatan sebelum dokumen pertanggungjawaban lengkap dengan alasan mendesak.","Melaksanakan perintah karena atasan yang bertanggung jawab","Menahan pencairan sampai dokumen sesuai prosedur lengkap","Menolak dan menjelaskan risiko penyalahgunaan anggaran","Mencairkan sebagian sambil segera melengkapi dokumen","Mengutamakan agar kegiatan untuk masyarakat tidak tertunda","Pencairan anggaran harus berdasar dokumen sah; perintah yang melanggar aturan tidak boleh dilaksanakan. UU No. 1/2004 Perbendaharaan Negara; PP No. 94/2021."],
+["Seorang warga meminta berkasnya didahulukan dan menawarkan uang pelicin, padahal pemohon lain antre panjang.","Melaporkan tawaran itu kepada atasan dan menunggu arahan","Menolak dan tetap memproses sesuai urutan antrean","Menolak tegas karena itu gratifikasi","Memberi layanan cepat secara resmi tanpa biaya bila memungkinkan","Membantu warga melengkapi berkas agar cepat selesai","Uang pelicin termasuk gratifikasi dan layanan wajib adil. UU No. 31/1999 jo. UU No. 20/2001 Pasal 12B; UU No. 25/2009."],
+["Anda mengetahui rekan satu bidang memakai kendaraan dinas untuk kepentingan pribadi.","Melapor kepada atasan langsung","Mengingatkan rekan merujuk aturan penggunaan barang milik negara","Menegur rekan secara pribadi karena itu tidak jujur","Meminta rekan mengganti biaya dan menyelesaikannya sendiri","Memastikan kendaraan tetap tersedia untuk layanan masyarakat","Barang milik negara hanya untuk kepentingan dinas. PP No. 27/2014 jo. PP No. 28/2020; PP No. 94/2021."],
+["Terjadi banjir dan warga perlu segera dievakuasi, tetapi Anda belum menerima perintah resmi.","Menunggu perintah resmi sambil terus melapor","Mengaktifkan prosedur tanggap darurat yang sudah ada","Memastikan bantuan dibagi adil tanpa pilih kasih","Langsung mengevakuasi lalu melapor kemudian","Mengutamakan keselamatan warga yang paling rentan","Pada keadaan darurat, prosedur tanggap darurat dan keselamatan masyarakat diutamakan. UU No. 24/2007 Penanggulangan Bencana; UU No. 30/2014 (diskresi)."],
+["Atasan meminta Anda mengubah data laporan agar capaian kinerja tampak baik.","Mengikuti arahan lalu memberi catatan kepada atasan","Menyusun laporan sesuai format dengan data valid","Menolak karena laporan harus jujur","Menyajikan data apa adanya disertai rencana perbaikan","Memikirkan dampak laporan palsu bagi kebijakan masyarakat","Memalsukan laporan melanggar kewajiban jujur dan akuntabel. UU No. 20/2023 (ASN); Nilai Akuntabel BerAKHLAK (SE MenPAN-RB No. 20/2021)."],
+["Prosedur pengadaan lama, sedangkan kebutuhan alat kantor mendesak.","Mengajukan permohonan percepatan kepada atasan","Tetap mengikuti tahapan pengadaan sesuai aturan","Menolak membeli tanpa proses karena rawan penyimpangan","Mencari mekanisme pengadaan darurat yang sah lalu menjalankannya","Meminjam alat dari unit lain agar layanan tetap berjalan","Pengadaan harus transparan dan akuntabel; tersedia mekanisme darurat yang sah. Perpres No. 16/2018 jo. perubahannya."],
+["Dalam rapat, Anda menilai kebijakan atasan keliru dan berpotensi merugikan warga.","Menyampaikan keberatan secara tertutup lalu mengikuti keputusan","Merujuk aturan yang berlaku untuk menunjukkan ketidaksesuaian","Menyatakan terus terang bahwa kebijakan itu tidak benar","Menyiapkan alternatif kebijakan dan mengusulkannya","Menyampaikan dampak kebijakan bagi warga sebagai bahan pertimbangan","Keberatan disampaikan santun, berbasis aturan dan data. UU No. 30/2014 (AUPB); Nilai Harmonis dan Kolaboratif."],
+["Rekan yang sakit meminta Anda menandatangani daftar hadirnya agar tunjangan tidak dipotong.","Menyarankan rekan izin resmi kepada atasan","Menolak karena absensi harus sesuai aturan kehadiran","Menolak karena itu pemalsuan","Membantu mengurus izin sakit lewat jalur yang sah","Menolak sambil membantu menyampaikan kondisi rekan agar mendapat keringanan","Memalsukan absensi adalah pelanggaran disiplin. PP No. 94/2021 tentang Disiplin PNS."],
+["Persyaratan permohonan warga kurang satu dokumen kecil, dan petugas lain biasa memakluminya.","Meminta petunjuk atasan","Menolak sampai persyaratan lengkap","Tidak memberi perlakuan istimewa kepada siapa pun","Menerima dengan syarat dokumen dilengkapi besok","Membantu warga menyiapkan dokumen yang kurang","Standar pelayanan harus pasti dan sama bagi semua. UU No. 25/2009 Pasal 4 (asas kepastian dan nondiskriminasi)."],
+["Kontraktor proyek yang Anda awasi menawarkan makan malam dan bingkisan menjelang pemeriksaan.","Melapor kepada atasan","Menolak sesuai aturan gratifikasi","Menolak karena dapat memengaruhi objektivitas","Mengatur pertemuan hanya di kantor","Tetap ramah agar kerja sama berjalan baik","Gratifikasi yang berkaitan dengan jabatan wajib ditolak atau dilaporkan. UU No. 20/2001 Pasal 12B-12C."],
+["Kerabat Anda yang akan mengikuti seleksi meminta informasi internal yang belum diumumkan.","Menyampaikan permintaan itu kepada atasan","Menolak karena informasi hanya boleh disampaikan secara resmi","Menolak karena itu tidak adil bagi peserta lain","Mengarahkan kerabat ke kanal pengumuman resmi","Menjelaskan baik-baik agar kerabat tidak tersinggung","Informasi yang dikecualikan wajib dijaga dan seleksi harus adil. UU No. 14/2008 Keterbukaan Informasi Publik; PP No. 94/2021."],
+["Atasan langsung dan atasan di atasnya memberi perintah yang saling bertentangan.","Melapor kepada atasan langsung terlebih dahulu","Memeriksa uraian tugas dan jalur koordinasi","Menyampaikan kedua perintah secara terbuka kepada keduanya","Memutuskan sendiri tindakan yang paling aman","Mendahulukan perintah yang paling berdampak bagi layanan","Perintah dikoordinasikan secara berjenjang dan transparan. PP No. 94/2021 (kewajiban menaati perintah kedinasan yang sah)."],
+["Anda menemukan kesalahan prosedur pada berkas yang sudah ditandatangani pimpinan.","Melaporkan temuan kepada pimpinan","Memperbaiki sesuai prosedur revisi dokumen","Mengakui kesalahan secara terbuka","Segera menarik berkas dan menggantinya","Memastikan masyarakat tidak dirugikan oleh kesalahan itu","Kesalahan administratif segera dilaporkan dan diperbaiki. UU No. 30/2014 (perbaikan keputusan); Nilai Akuntabel."],
+["Rekan senior menyarankan cara pintas di luar SOP karena sudah lazim dilakukan.","Menanyakan terlebih dahulu kepada atasan","Tetap memakai SOP","Menolak karena kebiasaan yang salah tidak boleh dibenarkan","Mengusulkan perbaikan SOP agar lebih efisien","Memakai cara pintas bila mempercepat layanan","Penyimpangan SOP tidak dibenarkan; perbaikan ditempuh lewat revisi resmi. UU No. 25/2009 (standar pelayanan); Nilai Kompeten."],
+["Pimpinan meminta Anda menghadiri kegiatan partai politik pada jam kerja.","Menyampaikan keberatan kepada pimpinan melalui atasan langsung","Menolak karena aturan mewajibkan ASN bersikap netral","Menolak karena menjaga netralitas adalah prinsip moral ASN","Mencari alasan kedinasan agar tidak hadir","Tetap menjalankan layanan masyarakat sebagaimana biasa","ASN wajib netral dari pengaruh partai politik. UU No. 20/2023 tentang ASN; PP No. 94/2021."],
+["Anda mengetahui anggaran suatu kegiatan digelembungkan oleh bagian lain.","Melapor kepada atasan","Melapor melalui mekanisme pengaduan resmi","Menegur langsung karena itu tidak jujur","Mengumpulkan bukti sendiri sebelum melapor","Memastikan program tetap berjalan agar masyarakat tidak terganggu","Dugaan korupsi dilaporkan melalui saluran resmi dengan bukti memadai. UU No. 31/1999; PP No. 43/2018."],
+["Sistem layanan online mati dan antrean warga menumpuk.","Melapor kepada atasan dan menunggu keputusan","Beralih ke prosedur manual yang telah ditetapkan","Mencatat semua transaksi manual dengan jujur","Membuat alur sementara sendiri agar layanan jalan","Mengutamakan lansia dan penyandang disabilitas","Layanan tetap berjalan dengan prosedur cadangan dan perlakuan khusus kelompok rentan. UU No. 25/2009 Pasal 29-30; SPBE (Perpres No. 95/2018)."],
+["Atasan memberi tugas di luar uraian jabatan padahal tugas pokok Anda dikejar tenggat.","Melaksanakan tugas tambahan sesuai perintah","Meminta penugasan tertulis dan menjelaskan beban tugas pokok","Terus terang menyampaikan kapasitas diri","Mengatur prioritas sendiri dan menyelesaikan keduanya","Memilih tugas yang paling berdampak bagi masyarakat","Penugasan dilakukan sesuai jabatan dan dikomunikasikan terbuka. UU No. 20/2023; Nilai Kompeten dan Kolaboratif."],
+["Anda menerima aduan masyarakat tentang pegawai yang kasar, ternyata ia teman dekat Anda.","Meneruskan aduan kepada atasan","Memproses aduan sesuai mekanisme pengaduan","Tidak membela teman dan bersikap objektif","Menegur teman dan langsung memperbaiki layanannya","Menemui pelapor dan menampung keluhannya","Aduan wajib ditindaklanjuti tanpa konflik kepentingan. UU No. 25/2009 Pasal 36; PP No. 42/2004 (Kode Etik)."],
+["Anda menemukan celah aturan yang membuat warga miskin tidak dapat mengakses bantuan.","Melaporkan celah itu kepada atasan","Tetap mengikuti ketentuan sampai ada revisi","Tidak memanipulasi data demi membantu","Menggunakan diskresi sesuai batas wewenang dan melapor","Mengupayakan agar warga tetap mendapat bantuan","Diskresi sah bila sesuai tujuan, tidak bertentangan dengan UU, dan dilaporkan. UU No. 30/2014 Pasal 22-32."]];
+const STEM=["Manakah tindakan yang LEBIH akan Anda ambil?","Manakah yang LEBIH menggambarkan sikap Anda?","Jika harus memilih salah satu, manakah yang paling sesuai?"];
+const REF="Edwards, A.L. (1959). EPPS Manual (format forced-choice); Murray, H.A. (1938). Explorations in Personality; serta peraturan pada tiap soal.";
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function build(){const it=[];CX.forEach((_,c)=>{for(let i=0;i<5;i++)for(let j=i+1;j<5;j++)it.push(Math.random()<.5?[c,i,j]:[c,j,i])});return sh(it)}
+const $=s=>document.querySelector(s),app=$('#app'),tm=$('#tm');
+let S={},iv;const N=TOTAL;
+const mmss=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function save(){try{localStorage.setItem('ipdn_d',JSON.stringify(S))}catch(e){}}
+function load(){try{const x=localStorage.getItem('ipdn_d');return x?JSON.parse(x):null}catch(e){return null}}
+function intro(){const old=load();
+app.innerHTML=`<div class="card"><h1>TES SUBTANSI KHUSUS IPDN</h1>
+<p>Tes ini mengukur pemahaman situasi kerja, etika, kepatuhan pada rantai komando dan SOP, serta pengambilan keputusan saat menghadapi dilema di lingkungan pemerintahan. Pada tiap soal tersedia sebuah situasi dan dua tindakan. Pilih satu tindakan (<b>A</b> atau <b>B</b>) yang <b>paling akan Anda lakukan</b>.</p>
+<div class="row" style="margin:14px 0"><div><b>${N}</b> soal</div><div><b>90</b> menit</div><div><b>2</b> opsi (A / B)</div></div>
+<label>Nama peserta</label><input type="text" id="nm" placeholder="Nama lengkap" value="${old&&old.name||''}" style="margin:6px 0 14px">
+<button class="btn" id="go">Mulai Ujian</button> ${old&&!old.done&&old.end>Date.now()?'<button class="btn o" id="rs">Lanjutkan ujian sebelumnya</button>':''}</div>
+<div class="card"><b>Ketentuan</b><ul><li>Waktu berjalan otomatis; ujian berakhir saat waktu habis.</li><li>Jawaban dapat diubah dan soal dapat ditandai ragu-ragu.</li><li>Profil sikap, analisis psikologis, pembahasan, dan rujukan tampil setelah ujian selesai.</li></ul></div>`;
+$('#go').onclick=()=>{const n=$('#nm').value.trim();if(!n){$('#nm').focus();return}
+S={name:n,items:build(),ans:Array(N).fill(-1),flag:Array(N).fill(0),cur:0,end:Date.now()+DURATION*1000,tq:Array(N).fill(0),ts:Date.now(),chg:0,done:false};save();exam()};
+if($('#rs'))$('#rs').onclick=()=>{S=old;S.ts=Date.now();exam()}}
+function exam(){tm.classList.remove('hide');clearInterval(iv);iv=setInterval(tick,500);render();tick()}
+function tick(){const r=Math.max(0,Math.round((S.end-Date.now())/1000));tm.textContent='⏱ '+mmss(r);tm.classList.toggle('low',r<300);if(r<=0)finish()}
+const tx=(it,k)=>CX[it[0]][1+it[1+k]];
+function render(){const i=S.cur,it=S.items[i];
+app.innerHTML=`<div class="grid"><div class="card"><span class="tag">Soal ${i+1} dari ${N}</span><div class="row"><b>Situasi</b><label><input type="checkbox" id="fl" ${S.flag[i]?'checked':''}> Ragu-ragu</label></div>
+<p style="font-size:16px;margin:8px 0 14px">${CX[it[0]][0]}</p><p><b>${STEM[i%3]}</b></p>
+${[0,1].map(k=>`<button class="opt ${S.ans[i]===k?'sel':''}" data-o="${k}"><i>${'AB'[k]}</i><span>${tx(it,k)}</span></button>`).join('')}
+<div class="row" style="margin-top:14px"><button class="btn o" id="pv" ${i?'':'disabled'}>← Sebelumnya</button>${i<N-1?'<button class="btn" id="nx">Selanjutnya →</button>':'<button class="btn" id="fn">Selesai</button>'}</div></div>
+<div><div class="card"><b>Navigasi Soal</b><div class="nav" style="margin-top:10px">${S.items.map((_,k)=>`<button data-k="${k}" class="${S.flag[k]?'f':S.ans[k]>-1?'a':''} ${k===i?'cur':''}">${k+1}</button>`).join('')}</div>
+<p class="ref">Terjawab: ${S.ans.filter(a=>a>-1).length}/${N}</p><button class="btn" id="fn2" style="width:100%">Akhiri Ujian</button></div></div></div>`;
+document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const v=+b.dataset.o;if(S.ans[i]>-1&&S.ans[i]!==v)S.chg++;S.ans[i]=v;save();if(i<N-1)go(i+1);else render()});
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>go(+b.dataset.k));
+$('#fl').onchange=e=>{S.flag[i]=e.target.checked?1:0;save();render()};
+if($('#pv'))$('#pv').onclick=()=>go(i-1);if($('#nx'))$('#nx').onclick=()=>go(i+1);
+[$('#fn'),$('#fn2')].forEach(b=>b&&(b.onclick=()=>{const u=S.ans.filter(a=>a<0).length;if(confirm(u?`Masih ada ${u} soal belum dijawab. Akhiri ujian?`:'Akhiri ujian sekarang?'))finish()}))}
+function go(k){S.tq[S.cur]+=(Date.now()-S.ts)/1000;S.ts=Date.now();S.cur=k;save();render();scrollTo(0,0)}
+function finish(){if(S.done)return;S.tq[S.cur]+=(Date.now()-S.ts)/1000;S.done=true;clearInterval(iv);tm.classList.add('hide');save();result()}
+const lv=p=>p>=62?'Tinggi':p>=40?'Sedang':'Rendah';
+function result(){const K=5,ch=Array(K).fill(0),ap=Array(K).fill(0);let al=0;
+S.items.forEach((it,i)=>{ap[it[1]]++;ap[it[2]]++;const a=S.ans[i];if(a>-1){const c=it[1+a],o=it[2-a];ch[c]++;if(DM[c][4]>DM[o][4])al++}});
+const ans=S.ans.filter(a=>a>-1).length,avg=Math.round(S.tq.reduce((x,y)=>x+y,0)/Math.max(1,ans)),fit=Math.round(al/Math.max(1,ans)*100);
+const cat=fit>=70?'Sangat Selaras':fit>=55?'Selaras':fit>=45?'Cukup Selaras':'Perlu Pengembangan';
+const rows=DM.map((n,k)=>({n,k,p:Math.round(ch[k]/ap[k]*100),c:ch[k],t:ap[k]}));const so=[...rows].sort((a,b)=>b.p-a.p);
+const P=k=>rows[k].p,notes=[];
+if(P(0)>=62&&P(2)<45)notes.push('Kepatuhan komando tinggi tetapi etika relatif rendah: berisiko patuh tanpa menimbang kebenaran perintah. Latih keberanian moral menolak perintah yang melanggar aturan.');
+if(P(3)>=62)notes.push('Inisiatif tinggi: berisiko melangkahi wewenang. Diskresi baru sah bila sesuai batas wewenang, tujuan, dan dilaporkan (UU 30/2014).');
+if(P(4)>=62&&P(1)<45)notes.push('Orientasi pelayanan tinggi dengan kepatuhan SOP rendah: empati perlu tetap berada dalam koridor aturan.');
+if(P(2)>=62&&P(1)>=50)notes.push('Etika dan kepatuhan prosedur sama-sama kuat: profil yang mendukung akuntabilitas aparatur.');
+const dec=S.chg>N*.2?'Anda cukup sering mengubah jawaban, menandakan keraguan dalam mengambil keputusan pada dilema.':'Pola jawaban stabil, menandakan keyakinan dalam menyikapi dilema.';
+const spd=avg<6?'Respons sangat cepat; pastikan tidak asal memilih.':avg>30?'Respons cenderung lambat dan sangat berhati-hati.':'Kecepatan respons proporsional.';
+app.innerHTML=`<div class="card"><span class="tag">Hasil Ujian</span><h1>${S.name}</h1><div class="row" style="align-items:center"><div><div class="big">${fit}<small style="font-size:18px;color:var(--m)"> /100</small></div><p class="ref">Indeks keselarasan keputusan dengan prinsip tata kelola pemerintahan: <b>${cat}</b></p></div><div class="ref">Terjawab ${ans}/${N}<br>Rata-rata ${avg} dtk/soal<br>Perubahan jawaban ${S.chg}×</div></div></div>
+<div class="card"><h2>Profil Sikap dalam Dilema Kerja</h2><p class="ref">Persentase = seberapa sering Anda memilih orientasi tersebut dari seluruh kemunculannya.</p>${rows.map(r=>`<div style="margin:12px 0"><div class="row"><span>${r.n[0]}</span><b>${r.p}% · ${lv(r.p)} (${r.c}/${r.t})</b></div><div class="bar"><div style="width:${r.p}%"></div></div></div>`).join('')}</div>
+<div class="card"><h2>Analisis Psikologis</h2>
+<p><b>Gambaran umum.</b> Orientasi yang paling dominan pada Anda adalah <b>${so[0].n[0]}</b> dan <b>${so[1].n[0]}</b>, sedangkan yang paling rendah adalah <b>${so[4].n[0]}</b>. Pada ${fit}% pilihan, keputusan Anda selaras dengan urutan prioritas umum tata kelola pemerintahan (etika dan legalitas, lalu SOP, lalu rantai komando, lalu pelayanan, lalu inisiatif).</p>
+<p><b>Gaya pengambilan keputusan.</b> ${dec} ${spd}</p>
+${notes.length?'<p><b>Catatan khusus.</b></p><ul>'+notes.map(x=>'<li>'+x+'</li>').join('')+'</ul>':''}
+<p><b>Uraian per orientasi:</b></p><ul>${rows.map(r=>`<li><b>${r.n[0]}</b> (${lv(r.p)}, ${r.p}%): ${r.p>=62?r.n[2]:r.p<40?r.n[3]:'Berada pada tingkat seimbang.'}</li>`).join('')}</ul>
+<p class="ref">Catatan: hasil bersifat indikatif untuk latihan. Format forced choice menghasilkan skor ipsatif (satu orientasi naik, yang lain turun), sehingga dibaca sebagai profil relatif. Urutan prioritas adalah penilaian umum dan bukan standar resmi seleksi; pada kasus nyata, pertimbangan hukum dan konteks tetap menentukan.</p></div>
+<div class="card"><h2>Pembahasan Lengkap</h2>${S.items.map((it,i)=>{const a=S.ans[i],d0=DM[it[1]],d1=DM[it[2]],best=d0[4]>d1[4]?0:1;return`<div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--b)"><b>Soal ${i+1}</b> · ${a<0?'<span class="ref">tidak dijawab</span>':'pilihan Anda: <b>'+'AB'[a]+'</b>'+(a===best?' <span class="good">✔ selaras</span>':'')}<p>${CX[it[0]][0]}</p>
+${[0,1].map(k=>`<div style="padding:7px 10px;margin:4px 0;border-radius:6px;border:1px solid ${a===k?'var(--r)':'var(--b)'};${a===k?'background:var(--rl)':''}"><b>${'AB'[k]}.</b> ${tx(it,k)} <span class="ref">→ ${DM[it[1+k]][0]}</span>${k===best?' <span class="good">(lebih selaras)</span>':''}</div>`).join('')}
+<div class="ex"><b>Pembahasan:</b> Opsi A mencerminkan <b>${d0[0]}</b> (${d0[1]}); opsi B mencerminkan <b>${d1[0]}</b> (${d1[1]}). Dalam situasi ini, opsi <b>${'AB'[best]}</b> lebih selaras dengan prioritas tata kelola pemerintahan, namun pilihan lain tetap dapat dipertanggungjawabkan bila dilakukan sesuai aturan dan wewenang.<br><b>Prinsip:</b> ${CX[it[0]][6].split('. ')[0]}.<div class="ref" style="margin-top:6px"><b>Rujukan:</b> ${CX[it[0]][6].split('. ').slice(1).join('. ')} · ${REF}</div></div></div>`}).join('')}</div>
+<button class="btn" id="again">Ulangi Ujian</button>`;
+$('#again').onclick=()=>{try{localStorage.removeItem('ipdn_d')}catch(e){}intro()};scrollTo(0,0)}
+intro();
+</script></body></html>
